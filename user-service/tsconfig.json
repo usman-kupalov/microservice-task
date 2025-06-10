@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "lib": ["es2019","es5", "es6", "dom", "es2020"],
+    "baseUrl": "./src",
+    "paths": {
+      "@src/*": ["*"],
+      "@utils/*": ["utils/*"],
+      "@services/*": ["services/*"],
+      "@db/*": ["db/*"],
+      "@middleware/*": ["middleware/*"],
+      "@controller/*": ["controller/*"]
+    },
+    "target": "es5",
+    "module": "commonjs",
+    "outDir": "./build",
+    "noEmit": false,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "downlevelIteration": true
+  }
+}
