@@ -4,8 +4,8 @@ import * as process from "node:process";
 import { EVENT_TYPES } from "@src/constants";
 import Logger from "@src/utils/logging";
 
-let connection: ChannelModel | null = null;
-let channel: Channel | null = null;
+export let connection: ChannelModel | null = null;
+export let channel: Channel | null = null;
 
 const getChannel = async (
   opts: Options.AssertQueue = { durable: true },

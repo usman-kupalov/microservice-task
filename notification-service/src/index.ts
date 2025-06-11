@@ -4,7 +4,7 @@ import * as process from "node:process";
 import { normalizePort } from "@utils/port";
 import * as http from "node:http";
 import app from "@src/app";
-import { consumeEvent } from "@services/consumer";
+import { channel, connection, consumeEvent } from "@services/consumer";
 
 const main = async () => {
   const port = normalizePort(process.env.PORT);
@@ -38,7 +38,9 @@ const main = async () => {
   await consumeEvent();
 };
 
-main().catch((error) => {
+main().catch(async (error) => {
   console.error("Failed to run server", error);
+  if (channel) await channel.close();
+  if (connection) await connection.close();
   process.exit(1);
 });

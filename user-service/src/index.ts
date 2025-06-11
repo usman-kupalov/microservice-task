@@ -6,6 +6,8 @@ import { normalizePort } from "@utils/port";
 import * as http from "node:http";
 import app from "@src/app";
 import { initMongo } from "@src/db/mongo";
+import { channel, connection } from "@services/publisher";
+import { connections as mongoConnection } from "mongoose";
 
 const main = async () => {
   await initMongo();
@@ -38,7 +40,12 @@ const main = async () => {
   });
 };
 
-main().catch((error) => {
+main().catch(async (error) => {
   console.error("Failed to run server", error);
+  for (const conn of mongoConnection) {
+    await conn.close();
+  }
+  if (channel) await channel.close();
+  if (connection) await connection.close();
   process.exit(1);
 });
