@@ -12,12 +12,14 @@ class UserService {
     });
   }
 
-  async getAllUsers(limit: number = 10): Promise<UserPayload[]> {
-    return User.find().limit(limit);
+  async getAllUsers(limit: number = 10, skip = 0): Promise<UserPayload[]> {
+    return User.find().limit(limit).skip(skip);
   }
 
   async findUserById(id: string): Promise<UserPayload | null> {
-    return User.findById(id);
+    return User.findOne({
+      id: id,
+    });
   }
 
   async findUserByEmail(email: string): Promise<UserPayload | null> {
@@ -27,7 +29,7 @@ class UserService {
   }
 
   async updateUser(id: string, payload: UserPayload) {
-    return User.updateOne(
+    await User.updateOne(
       {
         email: id,
       },
@@ -39,7 +41,7 @@ class UserService {
   }
 
   async deleteUser(id: string) {
-    User.deleteOne({
+    await User.deleteOne({
       id: id,
     });
   }
