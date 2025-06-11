@@ -24,7 +24,7 @@ export const createUser = catchAsync(async (req: Request, res: Response) => {
 
   await publishEvent({
     type: EVENT_TYPES.USER_CREATED,
-    data: email,
+    data: name,
   });
   res.status(201).json({ status: "ok" });
 });

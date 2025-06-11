@@ -1,12 +1,11 @@
 import amqp, { Channel, ChannelModel, Options } from "amqplib";
-import "@src/utils/env";
 import * as process from "node:process";
 import Logger from "@src/utils/logging";
 
 export let connection: ChannelModel | null = null;
 export let channel: Channel | null = null;
 
-const getChannel = async (
+export const getChannel = async (
   opts: Options.AssertQueue = { durable: true },
 ): Promise<Channel> => {
   try {
