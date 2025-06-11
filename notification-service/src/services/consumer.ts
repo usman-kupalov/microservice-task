@@ -1,18 +1,45 @@
-import amqp from "amqplib";
+import amqp, { Channel, ChannelModel, Options } from "amqplib";
 import "@src/utils/env";
 import * as process from "node:process";
-import { EVENT_TYPES, QUEUE_NAME } from "@src/constants";
+import { EVENT_TYPES } from "@src/constants";
 import Logger from "@src/utils/logging";
 
-export const connectToRabbitMq = async () => {
+let connection: ChannelModel | null = null;
+let channel: Channel | null = null;
+
+const getChannel = async (
+  opts: Options.AssertQueue = { durable: true },
+): Promise<Channel> => {
   try {
-    const connection = await amqp.connect(process.env.RABBITMQ_URL);
-    const channel = await connection.createChannel();
-    await channel.assertQueue(QUEUE_NAME, { durable: true });
+    if (!connection) {
+      connection = await amqp.connect(process.env.RABBITMQ_URL);
+      Logger.info("RabbitMQ connection established");
+      connection.on("error", (error) =>
+        Logger.error(`RabbitMQ connection error: ${error}`),
+      );
+      connection.on("close", () => {
+        Logger.warn("RabbitMQ connection closed");
+        connection = null;
+        channel = null;
+      });
+    }
 
-    Logger.info("Connected to RabbitMQ");
+    if (!channel) {
+      channel = await connection.createChannel();
+      await channel.assertQueue(process.env.QUEUE_NAME, opts);
+      Logger.info("Channel & queue ready");
+    }
 
-    await channel.consume(QUEUE_NAME, (msg) => {
+    return channel;
+  } catch (error) {
+    Logger.error(`Failed to create channel ${error}`);
+  }
+};
+
+export const consumeEvent = async () => {
+  try {
+    const channel = await getChannel();
+    await channel.consume(process.env.QUEUE_NAME, (msg) => {
       if (msg) {
         const event = JSON.parse(msg.content.toString());
         handleEvent(event);
@@ -20,17 +47,17 @@ export const connectToRabbitMq = async () => {
       }
     });
   } catch (error) {
-    Logger.error(`Failed to connect to RabbitMQ ${error}`);
+    Logger.error(`Failed to consume event: ${error}`);
   }
 };
 
-export const handleEvent = (event: { type: string; data: any }) => {
+const handleEvent = (event: { type: string; data: any }) => {
   switch (event.type) {
     case EVENT_TYPES.USER_CREATED:
-      Logger.log(`Welcome new user: ${event.data.email}`);
+      Logger.log(`Welcome new user: ${event.data}`);
       break;
     case EVENT_TYPES.USER_DELETED:
-      Logger.log(`User deleted: ID ${event.data.id}`);
+      Logger.log(`User deleted: ID ${event.data}`);
       break;
     default:
       Logger.warn(`Unknown event type: ${event.type}`);

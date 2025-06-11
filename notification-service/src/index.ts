@@ -4,7 +4,7 @@ import * as process from "node:process";
 import { normalizePort } from "@utils/port";
 import * as http from "node:http";
 import app from "@src/app";
-import { connectToRabbitMq } from "@services/consumer";
+import { consumeEvent } from "@services/consumer";
 
 const main = async () => {
   const port = normalizePort(process.env.PORT);
@@ -35,7 +35,7 @@ const main = async () => {
     console.log(`Server listening on ${bind}`);
   });
 
-  await connectToRabbitMq();
+  await consumeEvent();
 };
 
 main().catch((error) => {
