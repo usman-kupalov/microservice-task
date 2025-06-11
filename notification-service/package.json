@@ -1,0 +1,31 @@
+{
+  "name": "notification-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc --build tsconfig.json",
+    "start": "node -r ts-node/register build/src/index.js",
+    "dev:start": "nodemon --config nodemon.web.json ./src/index.ts"
+  },
+  "author": "Usmon",
+  "license": "ISC",
+  "dependencies": {
+    "amqplib": "^0.10.8",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "js-logger": "^1.6.1",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0"
+  },
+  "devDependencies": {
+    "@types/amqplib": "^0.10.7",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.0.0",
+    "nodemon": "^3.1.10",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.3"
+  }
+}
