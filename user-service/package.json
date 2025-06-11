@@ -11,6 +11,7 @@
   "author": "Usmon",
   "license": "ISC",
   "dependencies": {
+    "amqplib": "^0.10.8",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
@@ -21,15 +22,16 @@
     "reflect-metadata": "^0.2.2",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.8.3",
     "uuid": "^11.1.0",
     "validator": "^13.15.15"
   },
   "devDependencies": {
+    "@types/amqplib": "^0.10.7",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/validator": "^13.15.1",
     "nodemon": "^3.1.10",
-    "prettier": "^3.5.3"
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.3"
   }
 }

@@ -9,6 +9,8 @@ import {
   userIdSchema,
   validateSchema,
 } from "@controller/validation/schema";
+import { publishEvent } from "@services/publisher";
+import { EVENT_TYPES } from "@src/constants";
 
 const userService = new UserService();
 
@@ -19,6 +21,11 @@ export const createUser = catchAsync(async (req: Request, res: Response) => {
   if (user) throw new ResourceExistError();
 
   await userService.createUser({ name: name, email: email });
+
+  await publishEvent({
+    type: EVENT_TYPES.USER_CREATED,
+    data: email,
+  });
   res.status(201).json({ status: "ok" });
 });
 
@@ -62,6 +69,11 @@ export const deleteUser = catchAsync(async (req: Request, res: Response) => {
   const user = await userService.findUserById(id);
   if (!user) throw new NotFoundError();
   await userService.deleteUser(id);
+
+  await publishEvent({
+    type: EVENT_TYPES.USER_DELETED,
+    data: id,
+  });
 
   res.status(204).end();
 });
