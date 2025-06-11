@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc --build tsconfig.json",
-    "start": "node -r ts-node/register build/src/index.js",
+    "start": "node -r ts-node/register build/index.js",
     "dev:start": "nodemon --config nodemon.web.json ./src/index.ts"
   },
   "author": "Usmon",
@@ -19,7 +19,6 @@
     "js-logger": "^1.6.1",
     "mongo": "^0.1.0",
     "mongoose": "^8.15.1",
-    "reflect-metadata": "^0.2.2",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "uuid": "^11.1.0",

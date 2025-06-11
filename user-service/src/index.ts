@@ -1,4 +1,3 @@
-import "reflect-metadata";
 import "tsconfig-paths/register";
 import "@src/utils/env";
 import * as process from "node:process";
