@@ -6,6 +6,7 @@
       "@src/*": ["*"],
       "@utils/*": ["utils/*"],
       "@services/*": ["services/*"],
+      "@routes/*": ["routes/*"]
     },
     "target": "es5",
     "module": "commonjs",
