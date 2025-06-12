@@ -2,9 +2,41 @@ version: '3.8'
 
 services:
   rabbitmq:
+    hostname: ${RABBITMQ_HOST}
     image: rabbitmq:3-management
+    restart: on-failure
     env_file:
       - .env
     ports:
       - "5672:5672"
       - "15672:15672"
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "ping" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  user-service:
+    build: ./user-service
+    restart: on-failure
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./user-service/.env
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+  notification-service:
+    build: ./notification-service
+    restart: on-failure
+    ports:
+      - "3001:3001"
+    env_file:
+      - ./notification-service/.env
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+
+
