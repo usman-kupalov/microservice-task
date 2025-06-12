@@ -51,7 +51,7 @@ RABBITMQ_URL=
 QUEUE_NAME=
 
 # Notification Service
-PORT=1
+PORT=
 RABBITMQ_URL=
 QUEUE_NAME=
 
@@ -62,6 +62,5 @@ RABBITMQ_DEFAULT_VHOST=
 RABBITMQ_HOST=
 
 ### Running the Application
-```docker-compose up --build
 ```bash
 docker-compose up --build
